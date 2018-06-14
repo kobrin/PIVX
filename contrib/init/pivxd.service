@@ -1,19 +1,19 @@
 [Unit]
-Description=PIVX's distributed currency daemon
+Description=SMC's distributed currency daemon
 After=network.target
 
 [Service]
-User=pivx
-Group=pivx
+User=smc
+Group=smc
 
 Type=forking
-PIDFile=/var/lib/pivxd/pivxd.pid
+PIDFile=/var/lib/smcd/smcd.pid
 
-ExecStart=/usr/bin/pivxd -daemon -pid=/var/lib/pivxd/pivxd.pid \
-          -conf=/etc/pivx/pivx.conf -datadir=/var/lib/pivxd
+ExecStart=/usr/bin/smcd -daemon -pid=/var/lib/smcd/smcd.pid \
+          -conf=/etc/smc/smc.conf -datadir=/var/lib/smcd
 
-ExecStop=-/usr/bin/pivx-cli -conf=/etc/pivx/pivx.conf \
-         -datadir=/var/lib/pivxd stop
+ExecStop=-/usr/bin/smc-cli -conf=/etc/smc/smc.conf \
+         -datadir=/var/lib/smcd stop
 
 Restart=always
 PrivateTmp=true
