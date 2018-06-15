@@ -1,5 +1,5 @@
 ---
-name: "smc-aarch64-3.2"
+name: "smc-aarch64-4.0"
 enable_cache: true
 suites:
 - "xenial"

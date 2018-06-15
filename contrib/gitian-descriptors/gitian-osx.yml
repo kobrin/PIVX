@@ -1,5 +1,5 @@
 ---
-name: "smc-osx-3.2"
+name: "smc-osx-4.0"
 enable_cache: true
 suites:
 - "trusty"
