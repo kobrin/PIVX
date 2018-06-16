@@ -2089,7 +2089,7 @@ int64_t GetMasternodePayment(int nHeight, int64_t blockValue, int nMasternodeCou
         ret = 0; //block7
     }
      
-    }
+    
 
     return ret;
 }
