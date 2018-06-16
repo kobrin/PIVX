@@ -1,5 +1,5 @@
 ---
-name: "smc-linux-4.0"
+name: "smc-linux-4.0.0.5"
 enable_cache: true
 suites:
 - "trusty"
