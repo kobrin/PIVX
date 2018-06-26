@@ -1,5 +1,5 @@
 ---
-name: "smc-win-4.0.0.6"
+name: "smc-win-4.0.0.8"
 enable_cache: true
 suites:
 - "trusty"
