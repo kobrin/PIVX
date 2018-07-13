@@ -137,9 +137,38 @@ public:
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 2961674;
 
-        hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
-        assert(genesis.hashMerkleRoot == uint256("0x0a1cc3b7896b0cf7575bdeb6b47b1ae09bbb24c276f96b17ee761bf5722c295f"));
+		printf("Searching for genesis block...\n");
+            // This will figure out a valid hash and Nonce if youÆre
+            // creating a different genesis block:
+            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
+            uint256 thash;
+
+            while(true)
+            {
+                //thash = scrypt_blockhash(BEGIN(genesis.nVersion));
+                thash = HashQuark(BEGIN(genesis.nVersion), END(genesis.nNonce)); 
+                if (thash <= hashTarget)
+                    break;
+                if ((genesis.nNonce & 0xFFF) == 0)
+                {
+                    printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+                }
+                ++genesis.nNonce;
+                if (genesis.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time\n");
+                    ++genesis.nTime;
+                }
+            }
+
+            printf("genesis.nTimemain = %u \n", genesis.nTime);
+            printf("genesis.nNonce = %u \n", genesis.nNonce);
+            printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+		
+       // hashGenesisBlock = genesis.GetHash();
+       // assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
+       // assert(genesis.hashMerkleRoot == uint256("0x0a1cc3b7896b0cf7575bdeb6b47b1ae09bbb24c276f96b17ee761bf5722c295f"));
 
        vFixedSeeds.clear();
         vSeeds.clear();         // Single node address
