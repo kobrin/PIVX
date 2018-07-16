@@ -166,9 +166,9 @@ public:
             printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
         printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
 		
-       // hashGenesisBlock = genesis.GetHash();
-       // assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
-       // assert(genesis.hashMerkleRoot == uint256("0x0a1cc3b7896b0cf7575bdeb6b47b1ae09bbb24c276f96b17ee761bf5722c295f"));
+        hashGenesisBlock = genesis.GetHash();
+        assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
+        assert(genesis.hashMerkleRoot == uint256("0x0a1cc3b7896b0cf7575bdeb6b47b1ae09bbb24c276f96b17ee761bf5722c295f"));
 
        vFixedSeeds.clear();
         vSeeds.clear();         // Single node address
