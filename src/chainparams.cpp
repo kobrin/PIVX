@@ -57,7 +57,7 @@ static Checkpoints::MapCheckpoints mapCheckpoints =
     (0, uint256("0x001"));
 static const Checkpoints::CCheckpointData data = {
     &mapCheckpoints,
-    1530979500, // * UNIX timestamp of last checkpoint block
+    1531832700, // * UNIX timestamp of last checkpoint block
     0,    // * total number of transactions between genesis and last checkpoint
                 //   (the tx=... number in the SetBestChain debug.log lines)
     500        // * estimated number of transactions per day after checkpoint
@@ -67,7 +67,7 @@ static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
     boost::assign::map_list_of(0, uint256("0x001"));
 static const Checkpoints::CCheckpointData dataTestnet = {
     &mapCheckpointsTestnet,
-    1530979500,
+    1531832700,
     0,
     250};
 
@@ -75,7 +75,7 @@ static Checkpoints::MapCheckpoints mapCheckpointsRegtest =
     boost::assign::map_list_of(0, uint256("0x001"));
 static const Checkpoints::CCheckpointData dataRegtest = {
     &mapCheckpointsRegtest,
-    1530979500,
+    1531832700,
     0,
     100};
 
@@ -133,7 +133,7 @@ public:
         genesis.hashPrevBlock = 0;
         genesis.hashMerkleRoot = genesis.BuildMerkleTree();
         genesis.nVersion = 1;
-        genesis.nTime = 1530979500;
+        genesis.nTime = 1531832700;
         genesis.nBits = 0x1e0ffff0;
         genesis.nNonce = 2961674;
 
@@ -197,7 +197,7 @@ public:
         strSporkKey = "04e82882437aca8d5f2b25473d7cbfae1ae15a2233752484147f8048b6d4f3c293ef4f2daff145bbdfdb6738ec73eaa34856717177e67c248cacc441529837cff5";
         //strSporkKey = "04B433E6598390C992F4F022F20D3B4CBBE691652EE7C48243B81701CBDB7CC7D7BF0EE09E154E6FCBF2043D65AF4E9E97B89B5DBAF830D83B9B7F469A6C45A717";
         strObfuscationPoolDummyAddress = "D87q2gC9j6nNrnzCsg4aY6bHMLsT9nUhEw";
-        nStartMasternodePayments = 1530979500; //Wed, 25 Jun 2014 20:36:16 GMT
+        nStartMasternodePayments = 1531832700; //Wed, 25 Jun 2014 20:36:16 GMT
     }
 
     const Checkpoints::CCheckpointData& Checkpoints() const
@@ -236,9 +236,38 @@ public:
         nMaxMoneyOut = 43199500 * COIN;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1530979500;
+        genesis.nTime = 1531832700;
         genesis.nNonce = 2961674;
 
+		printf("Searching for genesis block...\n");
+            // This will figure out a valid hash and Nonce if youÆre
+            // creating a different genesis block:
+            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
+            uint256 thash;
+
+            while(true)
+            {
+                //thash = scrypt_blockhash(BEGIN(genesis.nVersion));
+                thash = HashQuark(BEGIN(genesis.nVersion), END(genesis.nNonce)); 
+                if (thash <= hashTarget)
+                    break;
+                if ((genesis.nNonce & 0xFFF) == 0)
+                {
+                    printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+                }
+                ++genesis.nNonce;
+                if (genesis.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time\n");
+                    ++genesis.nTime;
+                }
+            }
+
+            printf("genesis.nTimetest1 = %u \n", genesis.nTime);
+            printf("genesis.nNonce = %u \n", genesis.nNonce);
+            printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+		
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
 
@@ -269,7 +298,7 @@ public:
         nPoolMaxTransactions = 2;
         strSporkKey = "04ff1aa832fd1e32d1bcb8322003e82d96f6d7b880feeb57d434dfaea7fc734c567629434b8d8d0b2ea00788119ded3c78cee1dd010353cd2fa67a33de39292583";
         strObfuscationPoolDummyAddress = "y57cqfGRkekRyDRNeJiLtYVEbvhXrNbmox";
-        nStartMasternodePayments = 1530979500; //Fri, 09 Jan 2015 21:05:58 GMT
+        nStartMasternodePayments = 1531832700; //Fri, 09 Jan 2015 21:05:58 GMT
     }
     const Checkpoints::CCheckpointData& Checkpoints() const
     {
@@ -301,12 +330,42 @@ public:
         nTargetTimespan = 24 * 60 * 60; // Pivx: 1 day
         nTargetSpacing = 1 * 60;        // Pivx: 1 minutes
         bnProofOfWorkLimit = ~uint256(0) >> 1;
-        genesis.nTime = 1530979500;
+        genesis.nTime = 1531832700;
         genesis.nBits = 0x207fffff;
         genesis.nNonce = 1;
 
         hashGenesisBlock = genesis.GetHash();
         nDefaultPort = 50476;
+		
+		printf("Searching for genesis block...\n");
+            // This will figure out a valid hash and Nonce if youÆre
+            // creating a different genesis block:
+            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
+            uint256 thash;
+
+            while(true)
+            {
+                //thash = scrypt_blockhash(BEGIN(genesis.nVersion));
+                thash = HashQuark(BEGIN(genesis.nVersion), END(genesis.nNonce)); 
+                if (thash <= hashTarget)
+                    break;
+                if ((genesis.nNonce & 0xFFF) == 0)
+                {
+                    printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+                }
+                ++genesis.nNonce;
+                if (genesis.nNonce == 0)
+                {
+                    printf("NONCE WRAPPED, incrementing time\n");
+                    ++genesis.nTime;
+                }
+            }
+
+            printf("genesis.nTimetest2 = %u \n", genesis.nTime);
+            printf("genesis.nNonce = %u \n", genesis.nNonce);
+            printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
+        printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+		
         assert(hashGenesisBlock == uint256("0x70c89185d9ecbcc76eb75fa882db9570bfef18902b564b1f1e2469d3a996575b"));
 
         vFixedSeeds.clear(); //! Testnet mode doesn't have any fixed seeds.
