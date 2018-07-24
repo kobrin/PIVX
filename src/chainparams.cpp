@@ -135,7 +135,7 @@ public:
         genesis.nVersion = 1;
         genesis.nTime = 1531832700;
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 2961674;
+        genesis.nNonce = 3168649;
 
 		printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if youÆre
@@ -167,8 +167,8 @@ public:
         printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
 		
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256("0x00000ee432e46ea4289964036b5d071c808418fca17fdcf43d905f7c5c4b1c1e"));
-        assert(genesis.hashMerkleRoot == uint256("0x0a1cc3b7896b0cf7575bdeb6b47b1ae09bbb24c276f96b17ee761bf5722c295f"));
+        assert(hashGenesisBlock == uint256("0x0000003f757c884467a42eeff2f5d7ce4f70507275b22cc618f00097a34c7d8c"));
+        assert(genesis.hashMerkleRoot == uint256("0x3836488a293426ecb82bb230637416cc8cdd67680e235806efff847cf2ab83ea"));
 
        vFixedSeeds.clear();
         vSeeds.clear();         // Single node address
