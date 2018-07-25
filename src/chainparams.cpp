@@ -135,7 +135,7 @@ public:
         genesis.nVersion = 1;
         genesis.nTime = 1531832700;
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 3168649;
+        genesis.nNonce = 0;
 
 		printf("Searching for genesis block...\n");
             // This will figure out a valid hash and Nonce if youÆre
