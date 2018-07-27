@@ -41,7 +41,8 @@ public:
 
         MAX_BASE58_TYPES
     };
-
+void MineNewGenesisBlock();
+    bool CheckProofOfWork(uint256 hash, unsigned int nBits);
     const uint256& HashGenesisBlock() const { return hashGenesisBlock; }
     const MessageStartChars& MessageStart() const { return pchMessageStart; }
     const std::vector<unsigned char>& AlertKey() const { return vAlertPubKey; }
