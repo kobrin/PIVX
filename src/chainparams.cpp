@@ -79,6 +79,51 @@ static const Checkpoints::CCheckpointData dataRegtest = {
     0,
     100};
 
+	
+	 void CChainParams::MineNewGenesisBlock()
+     {
+        // genesis.nTime=time(null);
+        genesis.nNonce=0;
+        uint256 thash;
+        while(1)
+        {
+            thash=genesis.GetHash();
+            if (this->CheckProofOfWork(thash, genesis.nBits))
+                break;
+            if ((genesis.nNonce & 0xFF) == 0)
+            {
+                printf("nonce %08X: hash = %s\n",genesis.nNonce, thash.ToString().c_str());
+            }
+            ++genesis.nNonce;
+            if (genesis.nNonce == 0)
+            {
+                printf("NONCE WRAPPED, incrementing time\n");
+                ++genesis.nTime;
+            }
+        }
+        printf("genesis.nTime = %u;\n",genesis.nTime);
+        printf("genesis.nNonce = %u;\n",genesis.nNonce);
+        printf("assert(genesis.hashMerkleRoot == uint256(\"0x%s\"));\n",genesis.hashMerkleRoot.ToString().c_str());
+        printf("//genesis hash: 0x%s\n", genesis.GetHash().ToString().c_str());
+        exit(1);
+    };
+
+    //need a different implementation here that doesn't use error() and that doesn't use Params() since it isn't yet usable
+    bool CChainParams::CheckProofOfWork(uint256 hash, unsigned int nBits)
+    {
+        bool fNegative;
+        bool fOverflow;
+        uint256 bnTarget;
+
+        bnTarget.SetCompact(nBits, &fNegative, &fOverflow);
+
+        // Check proof of work matches claimed amount
+        if (hash > bnTarget)
+            return false;
+
+        return true;
+    };
+	
 class CMainParams : public CChainParams
 {
 public:
@@ -135,36 +180,9 @@ public:
         genesis.nVersion = 1;
         genesis.nTime = 1531832700;
         genesis.nBits = 0x1e0ffff0;
-        genesis.nNonce = 0;
+        genesis.nNonce = 3168649;
 
-		printf("Searching for genesis block...\n");
-            // This will figure out a valid hash and Nonce if youÆre
-            // creating a different genesis block:
-            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
-            uint256 thash;
-
-            while(true)
-            {
-                //thash = scrypt_blockhash(BEGIN(genesis.nVersion));
-                thash = HashQuark(BEGIN(genesis.nVersion), END(genesis.nNonce)); 
-                if (thash <= hashTarget)
-                    break;
-                if ((genesis.nNonce & 0xFFF) == 0)
-                {
-                    printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
-                }
-                ++genesis.nNonce;
-                if (genesis.nNonce == 0)
-                {
-                    printf("NONCE WRAPPED, incrementing time\n");
-                    ++genesis.nTime;
-                }
-            }
-
-            printf("genesis.nTimemain = %u \n", genesis.nTime);
-            printf("genesis.nNonce = %u \n", genesis.nNonce);
-            printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str());
-        printf("Gensis Hash Merkle: %s\n", genesis.hashMerkleRoot.ToString().c_str());
+		
 		
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256("0x0000003f757c884467a42eeff2f5d7ce4f70507275b22cc618f00097a34c7d8c"));
